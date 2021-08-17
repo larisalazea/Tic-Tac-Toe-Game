@@ -12,7 +12,7 @@ function cellValue(id) {
 
 function displayGameStatus() {
   document.getElementById("game-status").innerHTML = "Player " + player + " 's turn!";
-  checkhWinner();
+  checkWinner();
 }
 
 function changePlayer() {
@@ -23,32 +23,34 @@ function changePlayer() {
   }
 }
 
-function checkhWinner() {
-  if (cells[0] == cells[1] && cells[1] == cells[2] && cells[2] != "") {
-    document.getElementById("game-status").innerHTML = cells[0] + " won!";
-  }
-  else if (cells[3] == cells[4] && cells[4] == cells[5] && cells[5] != "") {
-    document.getElementById("game-status").innerHTML = cells[3] + " won!";
-  }
-  else if (cells[6] == cells[7] && cells[7] == cells[8] && cells[8] != "") {
-    document.getElementById("game-status").innerHTML = cells[6] + " won!";
-  }
-  else if (cells[0] == cells[3] && cells[3] == cells[6] && cells[6] != "") {
-    document.getElementById("game-status").innerHTML = cells[0] + " won!";
-  }
-  else if (cells[1] == cells[4] && cells[4] == cells[7] && cells[7] != "") {
-    document.getElementById("game-status").innerHTML = cells[1] + " won!";
-  }
-  else if (cells[2] == cells[5] && cells[5] == cells[8] && cells[8] != "") {
-    document.getElementById("game-status").innerHTML = cells[2] + " won!";
-  }
-  else if (cells[0] == cells[4] && cells[4] == cells[8] && cells[8] != "") {
-    document.getElementById("game-status").innerHTML = cells[0] + " won!";
-  }
-  else if (cells[2] == cells[4] && cells[4] == cells[6] && cells[6] != "") {
-    document.getElementById("game-status").innerHTML = cells[2] + " won!";
-  }
-  else if (count == 9) {
-    document.getElementById("game-status").innerHTML = "Tie!";
-  }
+const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
+
+function checkWinner() {
+    let roundWon = false;
+    let winner;
+    for (let i = 0; i <= 7; i++) {
+        const winCondition = winningConditions[i];
+        let a = cells[winCondition[0]];
+        let b = cells[winCondition[1]];
+        let c = cells[winCondition[2]];
+        if (a == b && b == c && c != "") {
+            roundWon = true;
+            winner = a;
+        }
+    }
+    if (roundWon) {
+        document.getElementById("game-status").innerHTML = winner + " won!";
+        return;
+    } else if (count == 9) {
+        document.getElementById("game-status").innerHTML = "It's a tie!";
+    }
 }
